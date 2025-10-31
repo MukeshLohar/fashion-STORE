@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Server Error - Fashion Store{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Luxury 500 Page Styling */
+    .error-container {
+        min-height: 80vh;
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe9e9 100%);
+        display: flex;
+        align-items: center;
+        padding: 60px 0;
+    }
+    
+    .error-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .error-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #e74c3c, #c0392b, #e74c3c);
+    }
+    
+    .error-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 8rem;
+        font-weight: 300;
+        color: #e74c3c;
+        text-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
+        margin: 0;
+        line-height: 1;
+    }
+    
+    .error-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #1a1a1a;
+        margin: 20px 0;
+    }
+    
+    .error-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 40px;
+    }
+    
+    .luxury-btn {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .luxury-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .luxury-btn:hover::before {
+        left: 100%;
+    }
+    
+    .luxury-btn:hover {
+        background: linear-gradient(135deg, #d63031 0%, #a70e27 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+    }
+    
+    .luxury-btn-outline {
+        background: transparent;
+        color: #1a1a1a;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 13px 28px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .luxury-btn-outline:hover {
+        border-color: #e74c3c;
+        color: #e74c3c;
+        background: rgba(231, 76, 60, 0.05);
+        transform: translateY(-2px);
+    }
+    
+    .status-card {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+        border: 1px solid #fecaca;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+        text-align: left;
+    }
+    
+    .status-icon {
+        font-size: 2rem;
+        color: #e74c3c;
+        margin-bottom: 15px;
+    }
+    
+    .status-title {
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+    }
+    
+    .status-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    
+    .status-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #fecaca;
+        color: #666;
+        position: relative;
+        padding-left: 25px;
+    }
+    
+    .status-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .status-list li::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    
+    .support-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        text-align: center;
+    }
+    
+    .support-icon {
+        font-size: 2.5rem;
+        color: #d4af37;
+        margin-bottom: 15px;
+    }
+    
+    .support-text {
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .support-contact {
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+    
+    .decorative-element {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #e74c3c;
+    }
+    
+    .retry-animation {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @media (max-width: 768px) {
+        .error-number {
+            font-size: 5rem;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+        }
+        
+        .error-subtitle {
+            font-size: 1rem;
+        }
+        
+        .luxury-btn,
+        .luxury-btn-outline {
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .decorative-element {
+            display: none;
+        }
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="error-card">
+                    <div class="decorative-element">
+                        <i class="bi bi-exclamation-octagon"></i>
+                    </div>
+                    <div class="p-5 text-center">
+                        <div class="mb-4">
+                            <h1 class="error-number">500</h1>
+                            <h2 class="error-title">Server Error</h2>
+                            <p class="error-subtitle">
+                                Something unexpected happened on our end. Our technical team has been 
+                                automatically notified and is working to resolve this issue promptly.
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+                            <button onclick="location.reload()" class="luxury-btn retry-animation">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                Try Again
+                            </button>
+                            <a href="{% url 'shop:home' %}" class="luxury-btn-outline">
+                                <i class="bi bi-house"></i>
+                                Return Home
+                            </a>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="status-icon">
+                                <i class="bi bi-tools"></i>
+                            </div>
+                            <h5 class="status-title">What you can do while we fix this:</h5>
+                            <ul class="status-list">
+                                <li>Refresh the page in a few moments</li>
+                                <li>Check your internet connection</li>
+                                <li>Try accessing a different page</li>
+                                <li>Clear your browser cache and cookies</li>
+                                <li>Contact our support team if the issue persists</li>
+                            </ul>
+                        </div>
+
+                        <div class="support-section">
+                            <div class="support-icon">
+                                <i class="bi bi-headset"></i>
+                            </div>
+                            <div class="support-text">
+                                Need immediate assistance? Our premium support team is here to help.
+                            </div>
+                            <div class="support-contact">
+                                <i class="bi bi-envelope-at"></i> support@fashionstore.com
+                                <br>
+                                <i class="bi bi-telephone"></i> 1-800-FASHION (24/7)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-retry functionality
+let retryCount = 0;
+const maxRetries = 3;
+
+function autoRetry() {
+    if (retryCount < maxRetries) {
+        retryCount++;
+        setTimeout(() => {
+            location.reload();
+        }, 5000); // Wait 5 seconds before auto-retry
+    }
+}
+
+// Start auto-retry after 10 seconds
+setTimeout(autoRetry, 10000);
+
+// Add retry feedback
+document.addEventListener('DOMContentLoaded', function() {
+    const retryBtn = document.querySelector('.retry-animation');
+    if (retryBtn) {
+        retryBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Retrying...';
+            this.style.opacity = '0.7';
+            setTimeout(() => location.reload(), 1000);
+        });
+    }
+});
+</script>
+{% endblock %}

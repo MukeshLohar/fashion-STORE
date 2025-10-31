@@ -1,0 +1,11 @@
+name,description,price,category,stock,size,color,image_url
+"Premium Cotton T-Shirt","Soft and comfortable cotton t-shirt perfect for everyday wear",29.99,"Clothing",25,"M","blue","https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
+"Denim Jeans Classic","High-quality denim jeans with modern fit",79.99,"Clothing",15,"L","blue","https://images.unsplash.com/photo-1542272604-787c3835535d?w=400"
+"Running Sneakers","Lightweight running shoes for active lifestyle",129.99,"Footwear",30,"9","white","https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400"
+"Leather Handbag","Elegant leather handbag for everyday use",159.99,"Accessories",10,"","brown","https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400"
+"Winter Jacket","Warm and stylish winter jacket",199.99,"Clothing",8,"L","black","https://images.unsplash.com/photo-1544966503-7cc5ac882d5b?w=400"
+"Casual Sneakers","Comfortable casual sneakers for daily wear",89.99,"Footwear",20,"8","white","https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=400"
+"Summer Dress","Light and breezy summer dress",69.99,"Clothing",12,"M","red","https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400"
+"Sports Watch","Digital sports watch with multiple features",249.99,"Accessories",5,"","black","https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"
+"Polo Shirt","Classic polo shirt for smart-casual look",39.99,"Clothing",18,"L","green","https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400"
+"Canvas Shoes","Stylish canvas shoes for casual outings",59.99,"Footwear",22,"7","red","https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400"

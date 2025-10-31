@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page Not Found - Fashion Store{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Luxury 404 Page Styling */
+    .error-container {
+        min-height: 80vh;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        display: flex;
+        align-items: center;
+        padding: 60px 0;
+    }
+    
+    .error-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .error-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d4af37, #b8941f, #d4af37);
+    }
+    
+    .error-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 8rem;
+        font-weight: 300;
+        color: #d4af37;
+        text-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
+        margin: 0;
+        line-height: 1;
+    }
+    
+    .error-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #1a1a1a;
+        margin: 20px 0;
+    }
+    
+    .error-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 40px;
+    }
+    
+    .luxury-btn {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .luxury-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .luxury-btn:hover::before {
+        left: 100%;
+    }
+    
+    .luxury-btn:hover {
+        background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+    }
+    
+    .luxury-btn-outline {
+        background: transparent;
+        color: #1a1a1a;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 13px 28px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .luxury-btn-outline:hover {
+        border-color: #d4af37;
+        color: #d4af37;
+        background: rgba(212, 175, 55, 0.05);
+        transform: translateY(-2px);
+    }
+    
+    .quick-links {
+        margin-top: 50px;
+        padding-top: 40px;
+        border-top: 1px solid #eee;
+    }
+    
+    .quick-link-item {
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        background: #f8f9fa;
+        margin-bottom: 15px;
+    }
+    
+    .quick-link-item:hover {
+        background: white;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        color: #d4af37;
+    }
+    
+    .quick-link-icon {
+        font-size: 2.5rem;
+        color: #d4af37;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .quick-link-item:hover .quick-link-icon {
+        transform: scale(1.1);
+    }
+    
+    .quick-link-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    
+    .quick-link-desc {
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .decorative-element {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #d4af37;
+    }
+    
+    @media (max-width: 768px) {
+        .error-number {
+            font-size: 5rem;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+        }
+        
+        .error-subtitle {
+            font-size: 1rem;
+        }
+        
+        .luxury-btn,
+        .luxury-btn-outline {
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .decorative-element {
+            display: none;
+        }
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <div class="error-card">
+                    <div class="decorative-element">
+                        <i class="bi bi-gem"></i>
+                    </div>
+                    <div class="p-5 text-center">
+                        <div class="mb-4">
+                            <h1 class="error-number">404</h1>
+                            <h2 class="error-title">Page Not Found</h2>
+                            <p class="error-subtitle">
+                                The page you're looking for seems to have taken a different path. 
+                                Even our finest pieces sometimes wander off the display!
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+                            <a href="{% url 'shop:home' %}" class="luxury-btn">
+                                <i class="bi bi-house"></i>
+                                Return Home
+                            </a>
+                            <a href="javascript:history.back()" class="luxury-btn-outline">
+                                <i class="bi bi-arrow-left"></i>
+                                Go Back
+                            </a>
+                        </div>
+
+                        <div class="quick-links">
+                            <h5 class="mb-4 text-muted">What would you like to do?</h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <a href="{% url 'shop:product_list' %}" class="quick-link-item d-block">
+                                        <div class="quick-link-icon">
+                                            <i class="bi bi-grid-3x3-gap"></i>
+                                        </div>
+                                        <div class="quick-link-title">Browse Products</div>
+                                        <div class="quick-link-desc">Explore our premium collection</div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <a href="{% url 'shop:product_search' %}" class="quick-link-item d-block">
+                                        <div class="quick-link-icon">
+                                            <i class="bi bi-search"></i>
+                                        </div>
+                                        <div class="quick-link-title">Search Products</div>
+                                        <div class="quick-link-desc">Find exactly what you need</div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <a href="{% url 'shop:cart_detail' %}" class="quick-link-item d-block">
+                                        <div class="quick-link-icon">
+                                            <i class="bi bi-bag"></i>
+                                        </div>
+                                        <div class="quick-link-title">Your Cart</div>
+                                        <div class="quick-link-desc">Review your selections</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

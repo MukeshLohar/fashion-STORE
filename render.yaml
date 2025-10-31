@@ -1,0 +1,25 @@
+# Fashion Store - Render Infrastructure as Code
+services:
+- type: web
+  name: fashion-store
+  runtime: python3
+  buildCommand: "./build.sh"
+  startCommand: "./start.sh"
+  plan: free
+  envVars:
+  - key: DJANGO_SETTINGS_MODULE
+    value: fashion_store.production_settings
+  - key: SECRET_KEY
+    generateValue: true
+  - key: DEBUG
+    value: "False"
+  disk:
+    name: media-storage
+    mountPath: /opt/render/project/src/media
+    sizeGB: 1
+
+databases:
+- name: fashion-store-db
+  databaseName: fashion_store
+  user: fashion_store_user
+  plan: free

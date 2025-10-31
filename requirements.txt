@@ -1,0 +1,19 @@
+# Fashion Store - Production Requirements for Render
+Django
+pillow
+psycopg2-binary
+python-decouple
+razorpay
+paypalrestsdk
+gunicorn
+whitenoise
+requests
+urllib3
+cryptography
+django-allauth
+dj-database-url
+python-dateutil
+# JSON handling
+simplejson
+# Social Authentication
+django-allauth
