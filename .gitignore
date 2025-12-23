@@ -60,3 +60,9 @@ htmlcov/
 # Temporary files
 *.tmp
 *.temp
+
+#database files
+*.sqlite3
+
+#env
+.env

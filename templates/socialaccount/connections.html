@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block title %}Social Account Connections - Sri Devi Fashion Jewellery{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-link-45deg"></i> Connected Accounts</h4>
+                    <p class="mb-0 small">Manage your social login connections</p>
+                </div>
+                <div class="card-body p-4">
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <strong><i class="bi bi-exclamation-triangle"></i> Error:</strong>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <p class="text-muted mb-4">
+                        Connect your social accounts to sign in faster and keep your account secure.
+                    </p>
+
+                    {% if socialaccount_list %}
+                        <h5 class="mb-3">Connected Accounts</h5>
+                        <div class="list-group mb-4">
+                            {% for account in socialaccount_list %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            {% if account.provider == 'google' %}
+                                                <i class="bi bi-google text-danger fs-3 me-3"></i>
+                                            {% elif account.provider == 'facebook' %}
+                                                <i class="bi bi-facebook text-primary fs-3 me-3"></i>
+                                            {% else %}
+                                                <i class="bi bi-link fs-3 me-3"></i>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0">{{ account.get_provider.name }}</h6>
+                                                <small class="text-muted">{{ account.extra_data.email|default:"Connected" }}</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <form method="post" class="d-inline">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="account" value="{{ account.id }}" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash"></i> Disconnect
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <h5 class="mb-3">Available Connections</h5>
+                    <div class="row g-3">
+                        {% get_providers as socialaccount_providers %}
+                        {% for provider in socialaccount_providers %}
+                            {% if provider.id not in socialaccount_list|map:'provider' %}
+                                <div class="col-md-6">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            {% if provider.id == 'google' %}
+                                                <i class="bi bi-google text-danger fs-1 mb-2"></i>
+                                            {% elif provider.id == 'facebook' %}
+                                                <i class="bi bi-facebook text-primary fs-1 mb-2"></i>
+                                            {% else %}
+                                                <i class="bi bi-link fs-1 mb-2"></i>
+                                            {% endif %}
+                                            <h6>{{ provider.name }}</h6>
+                                            <a href="{% provider_login_url provider.id process='connect' %}" 
+                                               class="btn btn-sm {% if provider.id == 'google' %}btn-outline-danger{% elif provider.id == 'facebook' %}btn-outline-primary{% else %}btn-outline-secondary{% endif %}">
+                                                <i class="bi bi-plus-circle"></i> Connect
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check"></i> Your connections are secure
+                        </small>
+                        <a href="{% url 'shop:product_list' %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

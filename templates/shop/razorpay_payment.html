@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_tags %}
+
+{% block title %}Complete Payment - Sri Devi Fashion Jewellery{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0"><i class="bi bi-credit-card"></i> Complete Your Payment</h4>
+                    <p class="mb-0 small">Order #{{ order.order_number }}</p>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Order Summary -->
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading"><i class="bi bi-info-circle"></i> Order Summary</h5>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <strong>{% show_price order.total_amount %}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <strong>{% show_price order.shipping_cost|default:"0.00" %}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax:</span>
+                            <strong>{% show_price order.tax_amount|default:"0.00" %}</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Amount:</strong>
+                            <h4 class="text-primary mb-0">{% show_price order.get_total_cost %}</h4>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="mb-4">
+                        <h6><i class="bi bi-shield-check text-success"></i> Secure Payment</h6>
+                        <p class="text-muted small mb-2">
+                            Your payment is secured by Razorpay. We accept Credit/Debit Cards, UPI, Net Banking, and Wallets.
+                        </p>
+                        <div class="alert alert-warning alert-sm">
+                            <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> Please allow popups for this site if the payment window doesn't open.
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="mb-4">
+                        <h6><i class="bi bi-geo-alt"></i> Shipping Address</h6>
+                        <p class="mb-0">
+                            {{ order.first_name }} {{ order.last_name }}<br>
+                            {{ order.address_line_1 }}<br>
+                            {% if order.address_line_2 %}{{ order.address_line_2 }}<br>{% endif %}
+                            {{ order.city }}, {{ order.state }} {{ order.postal_code }}<br>
+                            {{ order.country }}<br>
+                            <span class="text-muted">Phone: {{ order.phone }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Pay Now Button -->
+                    <div class="d-grid gap-2 mb-3">
+                        <button id="razorpay-btn" class="btn btn-primary btn-lg">
+                            <i class="bi bi-lock-fill"></i> Pay {% show_price order.get_total_cost %} Securely
+                        </button>
+                    </div>
+                    
+                    <!-- Test Mode Notice -->
+                    <div class="alert alert-info small mb-3">
+                        <i class="bi bi-info-circle"></i> <strong>Testing Razorpay?</strong> 
+                        <p class="mb-2">Make sure test mode is enabled in your Razorpay dashboard and payment methods are activated.</p>
+                        <details class="mt-2">
+                            <summary class="cursor-pointer"><strong>Quick Setup Guide</strong></summary>
+                            <ol class="small mt-2 mb-0">
+                                <li>Login to <a href="https://dashboard.razorpay.com/" target="_blank">Razorpay Dashboard</a></li>
+                                <li>Toggle to <strong>Test Mode</strong> (top right)</li>
+                                <li>Go to <strong>Settings → Payment Methods</strong></li>
+                                <li>Enable <strong>Cards</strong> and <strong>UPI</strong></li>
+                                <li>Save and refresh this page</li>
+                            </ol>
+                            <p class="mb-0 mt-2"><strong>Test Card:</strong> <code>4111 1111 1111 1111</code> | CVV: Any 3 digits | Expiry: Any future date</p>
+                        </details>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{% url 'shop:order_detail' order.order_number %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Order
+                        </a>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="mt-4 text-center">
+                        <p class="text-muted small mb-2">We Accept:</p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <i class="bi bi-credit-card-2-front fs-3 text-primary" title="Credit/Debit Cards"></i>
+                            <i class="bi bi-phone fs-3 text-success" title="UPI"></i>
+                            <i class="bi bi-bank fs-3 text-info" title="Net Banking"></i>
+                            <i class="bi bi-wallet2 fs-3 text-warning" title="Wallets"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-fill-check text-success"></i> 
+                        Secured by Razorpay | Your data is safe and encrypted
+                    </small>
+                </div>
+            </div>
+
+            <!-- Security Info -->
+            <div class="card mt-3 border-0 bg-light">
+                <div class="card-body text-center">
+                    <h6><i class="bi bi-info-circle text-primary"></i> Payment Information</h6>
+                    <p class="small text-muted mb-0">
+                        After successful payment, you will receive an order confirmation email.
+                        You can track your order from your account dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+// Store the price display for button updates
+const priceDisplay = "{% show_price order.get_total_cost %}";
+
+document.getElementById('razorpay-btn').onclick = function(e) {
+    e.preventDefault();
+    
+    // Disable button to prevent double clicks
+    this.disabled = true;
+    this.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Processing...';
+    
+    var options = {
+        "key": "{{ razorpay_key }}",
+        "amount": "{{ amount }}",
+        "currency": "{{ currency }}",
+        "name": "Sri Devi Fashion Jewellery",
+        "description": "Order #{{ order.order_number }}",
+        "image": "{{ request.scheme }}://{{ request.get_host }}/static/images/logo.png",
+        "order_id": "{{ razorpay_order_id }}",
+        "prefill": {
+            "name": "{{ order.first_name }} {{ order.last_name }}",
+            "email": "{{ order.email }}",
+            "contact": "{{ order.phone }}"
+        },
+        "notes": {
+            "order_number": "{{ order.order_number }}",
+            "address": "{{ order.address_line_1 }}"
+        },
+        "theme": {
+            "color": "#0d6efd"
+        },
+        "handler": function (response) {
+            // Payment successful - submit the form with payment details
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{% url "shop:razorpay_verify" %}';
+            
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = 'csrfmiddlewaretoken';
+            csrfToken.value = '{{ csrf_token }}';
+            form.appendChild(csrfToken);
+            
+            var paymentId = document.createElement('input');
+            paymentId.type = 'hidden';
+            paymentId.name = 'razorpay_payment_id';
+            paymentId.value = response.razorpay_payment_id;
+            form.appendChild(paymentId);
+            
+            var orderId = document.createElement('input');
+            orderId.type = 'hidden';
+            orderId.name = 'razorpay_order_id';
+            orderId.value = response.razorpay_order_id;
+            form.appendChild(orderId);
+            
+            var signature = document.createElement('input');
+            signature.type = 'hidden';
+            signature.name = 'razorpay_signature';
+            signature.value = response.razorpay_signature;
+            form.appendChild(signature);
+            
+            var orderNumber = document.createElement('input');
+            orderNumber.type = 'hidden';
+            orderNumber.name = 'order_number';
+            orderNumber.value = '{{ order.order_number }}';
+            form.appendChild(orderNumber);
+            
+            document.body.appendChild(form);
+            form.submit();
+        },
+        "modal": {
+            "ondismiss": function() {
+                // Re-enable button if user closes the payment modal
+                document.getElementById('razorpay-btn').disabled = false;
+                document.getElementById('razorpay-btn').innerHTML = '<i class="bi bi-lock-fill"></i> Pay ' + priceDisplay + ' Securely';
+            }
+        }
+    };
+    
+    var rzp = new Razorpay(options);
+    
+    rzp.on('payment.failed', function (response) {
+        console.error('Payment Failed:', response.error);
+        
+        // Show user-friendly error message
+        var errorMsg = response.error.description || 'Payment failed. Please try again.';
+        
+        // Special handling for "Please use another method" error
+        if (response.error.reason === 'payment_failed' && response.error.description.includes('use another method')) {
+            errorMsg = 'Payment method not available in test mode. Please:\n\n' +
+                      '1. Log into Razorpay Dashboard\n' +
+                      '2. Switch to Test Mode\n' +
+                      '3. Go to Settings → Payment Methods\n' +
+                      '4. Enable Cards and UPI\n\n' +
+                      'Or contact support for assistance.';
+        }
+        
+        alert('Payment Failed!\n\n' + errorMsg);
+        
+        // Re-enable button
+        document.getElementById('razorpay-btn').disabled = false;
+        document.getElementById('razorpay-btn').innerHTML = '<i class="bi bi-lock-fill"></i> Pay ' + priceDisplay + ' Securely';
+        
+        // Redirect to payment failed page with detailed reason
+        setTimeout(function() {
+            window.location.href = '{% url "shop:payment_failed" %}?reason=' + encodeURIComponent(errorMsg);
+        }, 3000);
+    });
+    
+    try {
+        rzp.open();
+    } catch (error) {
+        console.error('Error opening Razorpay:', error);
+        alert('Failed to open payment window. Please check if popups are allowed and try again.');
+        document.getElementById('razorpay-btn').disabled = false;
+        document.getElementById('razorpay-btn').innerHTML = '<i class="bi bi-lock-fill"></i> Pay ' + priceDisplay + ' Securely';
+    }
+};
+</script>
+
+<style>
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}

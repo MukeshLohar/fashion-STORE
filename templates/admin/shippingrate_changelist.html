@@ -1,0 +1,15 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'admin:shippingrate_export_sample' %}" class="button" style="background-color: #417690; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none;">
+            Download Sample Excel
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'admin:shippingrate_import_excel' %}" class="button" style="background-color: #417690; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none;">
+            Import from Excel
+        </a>
+    </li>
+{% endblock %}
