@@ -1,0 +1,383 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+    .import-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .page-header {
+        background: linear-gradient(135deg, #417690 0%, #2d5266 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .page-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    .card-header {
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+        padding: 18px 24px;
+        font-weight: 600;
+        font-size: 18px;
+        color: #2d5266;
+        border-radius: 10px 10px 0 0 !important;
+    }
+    .card-body {
+        padding: 24px;
+    }
+    .steps-list {
+        counter-reset: step-counter;
+        list-style: none;
+        padding: 0;
+    }
+    .steps-list li {
+        counter-increment: step-counter;
+        padding: 12px 0 12px 50px;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    .steps-list li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 8px;
+        background: #417690;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .table-responsive {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .table th {
+        background: #2d5266;
+        color: white;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 12px 10px;
+        white-space: nowrap;
+    }
+    .table td {
+        padding: 10px;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+    .guidelines-list {
+        padding-left: 0;
+    }
+    .guidelines-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .guidelines-list li:last-child {
+        border-bottom: none;
+    }
+    .upload-zone {
+        border: 3px dashed #417690;
+        border-radius: 10px;
+        padding: 40px 30px;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    .upload-zone:hover {
+        background: #e9ecef;
+        border-color: #2d5266;
+    }
+    .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+    .file-input-wrapper input[type=file] {
+        position: absolute;
+        left: -9999px;
+    }
+    .file-input-label {
+        background: #417690;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+    .file-input-label:hover {
+        background: #2d5266;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .btn-import {
+        background: #28a745;
+        color: white;
+        padding: 14px 40px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .btn-import:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+        padding: 14px 30px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+    .btn-cancel:hover {
+        background: #5a6268;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .download-template {
+        display: inline-block;
+        background: #fff3cd;
+        color: #856404;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 2px solid #ffc107;
+        transition: all 0.3s ease;
+    }
+    .download-template:hover {
+        background: #ffc107;
+        color: white;
+        transform: translateY(-2px);
+    }
+    .badge-required {
+        background: #dc3545;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+    .badge-optional {
+        background: #6c757d;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="import-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1><i class="bi bi-file-earmark-arrow-up"></i> Import Shipping Rates from Excel</h1>
+        <p class="mb-0 mt-2" style="opacity: 0.9;">Bulk import shipping rates for multiple countries</p>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-{% if message.tags == 'error' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Instructions Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="bi bi-list-ol"></i> How to Import Shipping Rates
+        </div>
+        <div class="card-body">
+            <ol class="steps-list">
+                <li>
+                    Download the <a href="{% url 'admin:shippingrate_export_sample' %}" class="download-template">
+                        <i class="bi bi-download"></i> Sample Excel Template
+                    </a>
+                </li>
+                <li>Fill in your shipping rates for each country using the required format</li>
+                <li>Save your Excel file and upload it using the form below</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Excel Format Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="bi bi-table"></i> Excel Format Example
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Country</th>
+                            <th>Cost (₹/kg)</th>
+                            <th>Min Ship (₹)</th>
+                            <th>Min Order</th>
+                            <th>Max Order</th>
+                            <th>Free Ship</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Standard India</strong></td>
+                            <td>Standard shipping</td>
+                            <td>India</td>
+                            <td>50</td>
+                            <td>100</td>
+                            <td>0</td>
+                            <td><em>(optional)</em></td>
+                            <td><em>(optional)</em></td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Singapore Standard</strong></td>
+                            <td>International shipping</td>
+                            <td>Singapore</td>
+                            <td>290</td>
+                            <td>180</td>
+                            <td>0</td>
+                            <td></td>
+                            <td></td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Field Guidelines Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="bi bi-info-circle"></i> Field Guidelines
+        </div>
+        <div class="card-body">
+            <ul class="guidelines-list">
+                <li>
+                    <strong>Name</strong> <span class="badge-required">REQUIRED</span><br>
+                    Unique identifier for the shipping rate (e.g., "Singapore Standard", "USA Express")
+                </li>
+                <li>
+                    <strong>Description</strong> <span class="badge-optional">OPTIONAL</span><br>
+                    Additional details about the shipping method
+                </li>
+                <li>
+                    <strong>Country</strong> <span class="badge-required">REQUIRED</span><br>
+                    Full country name (e.g., India, USA, Singapore, United Kingdom)
+                </li>
+                <li>
+                    <strong>Cost (₹/kg)</strong> <span class="badge-required">REQUIRED</span><br>
+                    Shipping cost per kilogram in Indian Rupees
+                </li>
+                <li>
+                    <strong>Min Shipping Charge (₹)</strong> <span class="badge-optional">OPTIONAL</span><br>
+                    Minimum shipping charge to ensure realistic costs for light packages (default: 0)
+                </li>
+                <li>
+                    <strong>Min/Max Order Value</strong> <span class="badge-optional">OPTIONAL</span><br>
+                    Set minimum or maximum order values for this rate to apply
+                </li>
+                <li>
+                    <strong>Free Shipping Threshold</strong> <span class="badge-optional">OPTIONAL</span><br>
+                    Leave blank for no free shipping, or set a threshold amount
+                </li>
+                <li>
+                    <strong>Priority</strong> <span class="badge-optional">OPTIONAL</span><br>
+                    Lower number = higher priority (0 is highest, default is 1)
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Upload Form Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="bi bi-cloud-upload"></i> Upload Excel File
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-zone">
+                    <i class="bi bi-file-earmark-excel" style="font-size: 48px; color: #417690; margin-bottom: 15px;"></i>
+                    <p style="font-size: 16px; color: #6c757d; margin-bottom: 20px;">Select your Excel file (.xlsx)</p>
+                    <div class="file-input-wrapper">
+                        <label for="excel_file" class="file-input-label">
+                            <i class="bi bi-folder2-open"></i> Choose File
+                        </label>
+                        <input type="file" name="excel_file" id="excel_file" accept=".xlsx" required onchange="updateFileName(this)">
+                    </div>
+                    <p id="file-name" style="margin-top: 15px; font-weight: 600; color: #417690;"></p>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn-import">
+                        <i class="bi bi-upload"></i> Import Shipping Rates
+                    </button>
+                    <a href="{% url 'admin:shop_shippingrate_changelist' %}" class="btn-cancel ms-3">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateFileName(input) {
+    const fileName = input.files[0]?.name;
+    const fileNameDisplay = document.getElementById('file-name');
+    if (fileName) {
+        fileNameDisplay.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i> Selected: ' + fileName;
+    }
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

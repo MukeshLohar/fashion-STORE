@@ -1,0 +1,35 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml
+
+# Optimize crawl budget
+Crawl-delay: 1
+
+# Block sensitive areas
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /static/admin/
+Disallow: /media/private/
+
+# Allow important pages
+Allow: /products/
+Allow: /categories/
+Allow: /search/
+Allow: /static/
+
+# Block duplicate content
+Disallow: /*?sort=
+Disallow: /*?filter=
+Disallow: /*&sort=
+Disallow: /*&filter=
+Disallow: /*?page=
+Disallow: /*&page=
+
+# Block search result pages to prevent duplicate content
+Disallow: /search?*
+Allow: /search/$

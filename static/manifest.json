@@ -1,0 +1,21 @@
+{
+    "name": "Sri Devi Fashion Jewellery",
+    "short_name": "FashionStore",
+    "description": "Premium luxury Sri Devi Fashion Jewellery with designer clothing and accessories",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1a1a1a",
+    "theme_color": "#1a1a1a",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/static/images/icon.svg",
+            "sizes": "192x192 512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["shopping", "lifestyle", "fashion"],
+    "lang": "en-US",
+    "dir": "ltr"
+}

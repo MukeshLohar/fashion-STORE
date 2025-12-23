@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block title %}Social Login - Sri Devi Fashion Jewellery{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0"><i class="bi bi-shield-lock"></i> Connect Your Account</h4>
+                    <p class="mb-0 small">Sign in with {{ provider.name }}</p>
+                </div>
+                <div class="card-body p-4">
+                    {% if process == "connect" %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            You are about to connect a {{ provider.name }} account to your Sri Devi Fashion Jewellery account.
+                        </div>
+                    {% else %}
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                {% if provider.id == 'google' %}
+                                    <i class="bi bi-google text-danger" style="font-size: 4rem;"></i>
+                                {% elif provider.id == 'facebook' %}
+                                    <i class="bi bi-facebook text-primary" style="font-size: 4rem;"></i>
+                                {% else %}
+                                    <i class="bi bi-box-arrow-in-right" style="font-size: 4rem;"></i>
+                                {% endif %}
+                            </div>
+                            <h5 class="mb-3">Sign in with {{ provider.name }}</h5>
+                            <p class="text-muted">
+                                You'll be redirected to {{ provider.name }} to complete the authentication process.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+                        
+                        {% if process == "connect" %}
+                            <input type="hidden" name="process" value="connect" />
+                        {% endif %}
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg {% if provider.id == 'google' %}btn-danger{% elif provider.id == 'facebook' %}btn-primary{% else %}btn-primary{% endif %}">
+                                <i class="bi bi-{% if provider.id == 'google' %}google{% elif provider.id == 'facebook' %}facebook{% else %}box-arrow-in-right{% endif %}"></i>
+                                {% if process == "connect" %}
+                                    Connect {{ provider.name }}
+                                {% else %}
+                                    Continue with {{ provider.name }}
+                                {% endif %}
+                            </button>
+                            
+                            <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Login
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-check"></i> Your data is secure and private
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Additional Information -->
+            <div class="mt-4 text-center">
+                <p class="text-muted small">
+                    Don't have an account? 
+                    <a href="{% url 'account_signup' %}" class="text-decoration-none">Sign up here</a>
+                </p>
+                <p class="text-muted small">
+                    <a href="{% url 'shop:product_list' %}" class="text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> Continue Shopping
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
